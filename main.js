@@ -695,16 +695,8 @@ let timeOffset = 0;
 
 // Silently fetches the exact Indian Standard Time from a global API
 async function syncNetworkTime() {
-    try {
-        const response = await fetch("https://worldtimeapi.org/api/timezone/Asia/Kolkata");
-        const data = await response.json();
-        const networkTime = new Date(data.datetime).getTime();
-        const localTime = new Date().getTime();
-        timeOffset = networkTime - localTime; // Calculates the difference if her clock is wrong
-    } catch (error) {
-        console.log("Network time failed. Falling back to local device time.");
-        timeOffset = 0;
-    }
+    console.log("Skipping network sync for local tunnel mode.");
+    timeOffset = 0; // Force it to use your laptop's local time immediately
 }
 syncNetworkTime(); // Run it instantly in the background
 
