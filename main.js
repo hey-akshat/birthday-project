@@ -1,99 +1,107 @@
 // ==========================================
 // CONFIGURATION (Edit this section later)
 // ==========================================
+
+// 1. MUST BE AT THE TOP
+const ASSET_URLS = {
+    "bg-music": "https://drive.usercontent.google.com/download?id=1BnIYxQX-xklSChiGlHxXs5PaJHab3N2B&export=download",
+    "error": "https://drive.usercontent.google.com/download?id=1l1TYrUHuVDnuDXFhQFhSPXAvcW5-wfjA&export=download",
+    "key-backspace": "https://drive.usercontent.google.com/download?id=1aUXRVQzl_CAW2-GkFMnprYcrckkPBDEN&export=download",
+    "key-press": "https://drive.usercontent.google.com/download?id=1IU33IapoO1IUyzduPKVRTsb-nHbc29tY&export=download",
+    "pop": "https://drive.usercontent.google.com/download?id=1fFCLrLFZxnVEeGKaWovnCpuQCwbgitYN&export=download",
+    "type": "https://drive.usercontent.google.com/download?id=1YVGGVpibLMzvZqBO37El7ghpLyOUT_5p&export=download",
+    "unlock-success": "https://drive.usercontent.google.com/download?id=1GdBrYHF93qkW5WbpNZrB5rJQ59BuGBHh&export=download",
+    "bg1-4k": "https://drive.usercontent.google.com/download?id=1l-6yv1kJwPHcX26cfJJOk83h092XIlGI&export=download",
+    "bg1-1080p": "https://drive.usercontent.google.com/download?id=1G1jbNBeF2WbBfRsWXOROqhv-bhL8wJo-&export=download",
+    "bg2-4k": "https://drive.usercontent.google.com/download?id=1DIGkH30MOd_6YLxQr9ESrvAfKLQILQMI&export=download",
+    "bg2-1080p": "https://drive.usercontent.google.com/download?id=17Yc5utYASVNMEXC2dnJrBE18w5crbnSX&export=download",
+    "cat-dance": "https://drive.usercontent.google.com/download?id=15yj9K3W-zza_y5oZjx4_aTZI_kt0XYTP&export=download",
+    "memory1": "https://drive.usercontent.google.com/download?id=1ME5z_-5HC8pl21alxwpOjtzFhc1KIcL5&export=download",
+    "your-3-sec-video": "https://drive.usercontent.google.com/download?id=1uF5MXNBG3CH6UubiZc7meGzwCSwbjH_R&export=download",
+    "contract": "https://drive.usercontent.google.com/download?id=12kDENVJNmkZPFsGdKl-TzYRC19NL_OxE&export=download",
+    "final-pic": "https://drive.usercontent.google.com/download?id=1cOKvuFm6i1wSpkEuidHVJ2MR_Z3s9HUI&export=download",
+    "message-4": "https://drive.usercontent.google.com/download?id=1-ZjJneWTCrPXO4FKTsZmUvAtDcUMB4yB&export=download",
+    "question": "https://drive.usercontent.google.com/download?id=1IrA8YoFo7TllQzGw5eagu2Da1ATOCWPi&export=download",
+    "toffee-run": "https://drive.usercontent.google.com/download?id=1gdUMA2ClGk6aMx7dBlalJ-xEWiDMuca4&export=download",
+    "sticker1": "https://drive.usercontent.google.com/download?id=1lYK404addhHo-0uQiJcMRjuOboxS0FdZ&export=download",
+    "sticker2": "https://drive.usercontent.google.com/download?id=1c57fkwNWqG3Z_HqLF4hkjnHPDegOJi4n&export=download",
+    "sticker3": "https://drive.usercontent.google.com/download?id=1CRw3kOWvAQUD6kHTmy0DBeXGA1lABSrw&export=download",
+    "sticker4": "https://drive.usercontent.google.com/download?id=1us--YLh8K1xNiESjNjG-0qrDqlELoqwR&export=download",
+    "sticker5": "https://drive.usercontent.google.com/download?id=1GKVZWfH5zgUThDyn6-M4rdvJHWLJOZ6a&export=download"
+};
+
+function getLink(id) {
+    return `https://drive.usercontent.google.com/download?id=${ASSET_URLS[id]}&export=download`;
+}
+
+// ==========================================
+// CONFIGURATION
+// ==========================================
 const CONFIG = {
     targetName: "diksha",
-    masterPassword: "300526", // <--- THE MASTER KEY
-
-    // THE MASTER VOLUME CONTROLLER (0.0 = Muted, 1.0 = Max Volume)
+    masterPassword: "300526",
     bgmVolume: 0.1,
-    
-    // THE TESTING SWITCH: Change to 'false' when you are ready for the real June 22nd launch
     isTestingMode: false, 
-    
-    // The exact lock date: June 22, 2026 at 12:00:00 AM (Midnight) in Indian Standard Time
     targetDateString: "2026-06-22T00:00:00+05:30",
-    audioFile: "/audio/bg-music.mp3", 
-    
-    // Interactive Sound Effects
+    audioFile: getLink('bg-music'), 
     sfx: {
-        pop: "/audio/pop.mp3",
-        type: "/audio/type.mp3",
-        error: "/audio/error.mp3",
-
-        // NEW LOGIN SOUNDS
-        keyPress: "/audio/key-press.mp3",
-        keyBackspace: "/audio/key-backspace.mp3",
-        unlockSuccess: "/audio/unlock-success.mp3"
+        pop: getLink('pop'),
+        type: getLink('type'),
+        error: getLink('error'),
+        keyPress: getLink('key-press'),
+        keyBackspace: getLink('key-backspace'),
+        unlockSuccess: getLink('unlock-success')
     },
-    
-    initialGreetingContent: "<div class='landscape-player'><video src='/videos/memory1.mp4' controls playsinline></video></div>",
-        stickers: [
-            { 
-                title: "Jldi aashirvad lelo, genz aarti hai 🤣", 
-                src: "/stickers/sticker1.png", 
-                // THE FIX: Added width: 100% to stop the overflow, and 'autoplay' to unfreeze the video!
-                content: "<div class='landscape-player' style='width: 100%;'><video src='/videos/cat-dance.mp4' autoplay loop muted playsinline style='width: 100%; outline: none; border: none;'></video></div>" 
-            },
-            { 
-                title: "Kaafi pehle ka hai 🤓", 
-                src: "/stickers/sticker2.png", 
-                // Notice we are using 'portrait-player' instead of 'landscape-player' here!
-                content: "<div class='portrait-player'><video src='/videos/your-3-sec-video.mp4' autoplay loop muted playsinline></video></div>" 
-            },
-            { 
-                title: "Contract.exe", 
-                src: "/stickers/sticker3.png", 
-                instant: true, // <--- This completely disables the typing and sound!
-                content: "<img src='/pics/contract.jpeg' style='width: 100%; border: 2px inset #fff;'><p style='margin-top: 10px;'>Contract yaad rakhna, interest bdh rha hai 🤣</p>" 
-            },
-            { 
-                title: "Tumhare liye gift 😁", 
-                src: "/stickers/sticker4.png", 
-                instant: true, // THE FIX: This completely skips the typing animation!
-                content: "<img src='/pics/message-4.png' style='width: 100%; border: 2px inset #fff; display: block;'>" 
-            },
-            { 
-                title: "Leave_a_Note.exe", 
-                src: "/stickers/sticker5.png", 
-                instant: true, // <--- THE FIX: Add this line!
-                content: `
+    initialGreetingContent: `<div class='landscape-player'><video src='${getLink('memory1')}' controls playsinline></video></div>`,
+    stickers: [
+        { 
+            title: "Jldi aashirvad lelo, genz aarti hai 🤣", 
+            src: getLink('sticker1'), 
+            content: `<div class='landscape-player' style='width: 100%;'><video src='${getLink('cat-dance')}' autoplay loop muted playsinline style='width: 100%; outline: none; border: none;'></video></div>` 
+        },
+        { 
+            title: "Kaafi pehle ka hai 🤓", 
+            src: getLink('sticker2'), 
+            content: `<div class='portrait-player'><video src='${getLink('your-3-sec-video')}' autoplay loop muted playsinline></video></div>` 
+        },
+        { 
+            title: "Contract.exe", 
+            src: getLink('sticker3'), 
+            instant: true, 
+            content: `<img src='${getLink('contract')}' style='width: 100%; border: 2px inset #fff;'><p style='margin-top: 10px;'>Contract yaad rakhna, interest bdh rha hai 🤣</p>` 
+        },
+        { 
+            title: "Tumhare liye gift 😁", 
+            src: getLink('sticker4'), 
+            instant: true, 
+            content: `<img src='${getLink('message-4')}' style='width: 100%; border: 2px inset #fff; display: block;'>` 
+        },
+        { 
+            title: "Leave_a_Note.exe", 
+            src: getLink('sticker5'), 
+            instant: true, 
+            content: `
                 <div class="notebook-page">
                     <p class="handwriting">Bohot bdhiya...</p>
                     <p class="handwriting">Kuch shabd aap kehna chahengi?</p>
                     <textarea id="secret-message" class="handwriting-input" placeholder="Scribble something here..."></textarea>
                     <button id="send-msg-btn" class="handwriting-btn">Send</button>
                 </div>
-                ` 
-            }
-        ],
-    
-        finaleContent: "<img src='/pics/final-pic.png' style='max-height: 40vh;'><p>All jokes aside, a very Happy Birthday!</p><p>May you achieve whatever you want in life.<br>I hope all your dreams come true.</p><p>Mujhse aashirvaad le lena, poore ho hi jayenge,<br>and tumhara Vrindavan jaane ka sapna bhi poora ho jaye. 😁</p><p>Once again, a very Happy Birthday! ❤️</p>",
-    emojis: { waiting: "🙄", correct: "😻", wrong: "🥲", backspace: "😒", locked: "⏳" },
-    thoughts: { 
-        waiting: "Naam to yaad hoga apna?", 
-        correct: "Sahi hai, aage badho", 
-        wrong: "Dimag hi nhi hai", 
-        backspace: "Ghutna check kro",
-        locked: "Arey Madam ji, right person, wrong time!"
-    },
-    secretNames: {
-        akshat: {
-            target: "akshat",
-            emoji: "😏",
-            thought: "Itni yaad aa rahi hai meri?",
-            // THE FIX: Replaced the text with your contract image
-            payloadContent: "<img src='/pics/question.png' style='width: 100%; max-width: 696px; height: auto; border: 2px inset #fff; display: block;'>"
-        },
-        toffee: {
-            target: "toffee",
-            emoji: "🐶",
-            thought: "Spelling aati hai?", 
-            // THE FIX: Added a clickable button that opens YouTube in a new tab
-            payloadContent: "<div style='text-align: center;'><p>Kuch entertaining dekhna hai?</p><a href='https://www.youtube.com/watch?v=YLF4sKkUzSQ&list=RDYLF4sKkUzSQ&start_radio=1' target='_blank' style='display: inline-block; margin-top: 15px; padding: 8px 16px; background: #000080; color: #fff; text-decoration: none; border: 2px outset #fff; font-family: \"VT323\", monospace; font-size: 1.2rem; cursor: pointer;'>▶ Watch on YouTube</a></div>"
+            ` 
         }
+    ],
+    finaleContent: `<img src='${getLink('final-pic')}' style='max-height: 40vh;'><p>All jokes aside, a very Happy Birthday!</p><p>May you achieve whatever you want in life.<br>I hope all your dreams come true.</p><p>Mujhse aashirvaad le lena, poore ho hi jayenge,<br>and tumhara Vrindavan jaane ka sapna bhi poora ho jaye. 😁</p><p>Once again, a very Happy Birthday! ❤️</p>`,
+    emojis: { waiting: "🙄", correct: "😻", wrong: "🥲", backspace: "😒", locked: "⏳" },
+    thoughts: { waiting: "Naam to yaad hoga apna?", correct: "Sahi hai, aage badho", wrong: "Dimag hi nhi hai", backspace: "Ghutna check kro", locked: "Arey Madam ji, right person, wrong time!" },
+    secretNames: {
+        akshat: { target: "akshat", emoji: "😏", thought: "Itni yaad aa rahi hai meri?", payloadContent: `<img src='${getLink('question')}' style='width: 100%; max-width: 696px; height: auto; border: 2px inset #fff; display: block;'>` },
+        toffee: { target: "toffee", emoji: "🐶", thought: "Spelling aati hai?", payloadContent: `<div style='text-align: center;'><p>Kuch entertaining dekhna hai?</p><a href='https://www.youtube.com/watch?v=YLF4sKkUzSQ&list=RDYLF4sKkUzSQ&start_radio=1' target='_blank' style='display: inline-block; margin-top: 15px; padding: 8px 16px; background: #000080; color: #fff; text-decoration: none; border: 2px outset #fff; font-family: "VT323", monospace; font-size: 1.2rem; cursor: pointer;'>▶ Watch on YouTube</a></div>` }
     }
 };
+
+// ... (KEEP ALL YOUR EXISTING ENGINE CODE BELOW THIS LINE) ...
+// NOTE: I truncated the rest, but ensure your existing window/physics functions 
+// follow immediately here.
 
 // FORCE PREVENT MOBILE ZOOM & LAYOUT BREAKING
 const meta = document.createElement('meta');
@@ -123,10 +131,14 @@ document.head.appendChild(styleOverride);
 
 window.onload = () => {
     const assetsToLoad = [
-        CONFIG.audioFile,
-        '/pics/toffee-run.png',
-        ...CONFIG.stickers.map(s => s.src)
-    ].filter(Boolean); 
+        getLink('bg-music'),
+        getLink('toffee-run'),
+        getLink('sticker1'),
+        getLink('sticker2'),
+        getLink('sticker3'),
+        getLink('sticker4'),
+        getLink('sticker5')
+    ].filter(Boolean);
 
     let loadedCount = 0;
     let isSystemReady = false; 
@@ -135,7 +147,7 @@ window.onload = () => {
     const bootScreen = document.getElementById('boot-screen');
 
     // Update the initial text so she knows it's a heavy, high-quality payload
-    if (bootText) bootText.innerText = "DOWNLOADING HIGH-FIDELITY MEMORIES... PLEASE WAIT";
+    if (bootText) bootText.innerText = "LOAADING... PLEASE WAIT";
 
     function completeLoading() {
         if (isSystemReady) return;
@@ -272,29 +284,8 @@ if (glassPanelTarget) {
 if (gateScreen) {
     const loginVideoBg = document.createElement('video');
     const isHighResScreen = window.innerWidth > 1200 || (window.innerWidth > 768 && window.devicePixelRatio > 1.5);
-    
-    // MIXED EXTENSION FIX: 4K is an MP4, 1080p is a WEBM
-    loginVideoBg.src = isHighResScreen ? '/videos/bg1-4k.mp4' : '/videos/bg1-1080p.mp4';
-    
-    loginVideoBg.autoplay = true;
-    loginVideoBg.loop = true;
-    loginVideoBg.muted = true; 
-    loginVideoBg.playsInline = true;
-    
-    // THE BROWSER OVERRIDE FIX
-    loginVideoBg.setAttribute('muted', '');
-    loginVideoBg.setAttribute('playsinline', '');
-    loginVideoBg.setAttribute('autoplay', '');
-    
-    loginVideoBg.className = 'login-bg-video';
-    
-    gateScreen.insertBefore(loginVideoBg, gateScreen.firstChild);
-}// INJECT THE CINEMATIC LOGIN VIDEO (With Hardware Detection)
-if (gateScreen) {
-    const loginVideoBg = document.createElement('video');
-    const isHighResScreen = window.innerWidth > 1200 || (window.innerWidth > 768 && window.devicePixelRatio > 1.5);
 
-    loginVideoBg.src = isHighResScreen ? '/videos/bg1-4k.mp4' : '/videos/bg1-1080p.mp4';
+    loginVideoBg.src = isHighResScreen ? getLink('bg1-4k') : getLink('bg1-1080p');
 
     loginVideoBg.autoplay = true;
     loginVideoBg.loop = true;
@@ -319,7 +310,7 @@ if (gateScreen) {
 const mainVideoBg = document.createElement('video');
 const isHighResScreenDesktop = window.innerWidth > 1200 || (window.innerWidth > 768 && window.devicePixelRatio > 1.5);
 
-mainVideoBg.src = isHighResScreenDesktop ? '/videos/bg2-4k.webm' : '/videos/bg2-1080p.mp4';
+mainVideoBg.src = isHighResScreenDesktop ? getLink('bg2-4k') : getLink('bg2-1080p');
 mainVideoBg.autoplay = true;
 mainVideoBg.loop = true;
 mainVideoBg.muted = true; 
@@ -1225,7 +1216,7 @@ function initToffeeAssistant() {
     thoughtBubble.className = 'toffee-bubble';
     
     const toffeeImg = document.createElement('img');
-    toffeeImg.src = '/pics/toffee-run.png';
+    toffeeImg.src = getLink('toffee-run');
     toffeeImg.className = 'toffee-img';
     toffeeImg.alt = 'Toffee Assistant';
 
