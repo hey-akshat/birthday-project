@@ -284,27 +284,6 @@ if (glassPanelTarget) {
 if (gateScreen) {
     const loginVideoBg = document.createElement('video');
     const isHighResScreen = window.innerWidth > 1200 || (window.innerWidth > 768 && window.devicePixelRatio > 1.5);
-    
-    // MIXED EXTENSION FIX: 4K is an MP4, 1080p is a WEBM
-    loginVideoBg.src = isHighResScreen ? getLink('bg1-4k') : getLink('bg1-1080p');
-    
-    loginVideoBg.autoplay = true;
-    loginVideoBg.loop = true;
-    loginVideoBg.muted = true; 
-    loginVideoBg.playsInline = true;
-    
-    // THE BROWSER OVERRIDE FIX
-    loginVideoBg.setAttribute('muted', '');
-    loginVideoBg.setAttribute('playsinline', '');
-    loginVideoBg.setAttribute('autoplay', '');
-    
-    loginVideoBg.className = 'login-bg-video';
-    
-    gateScreen.insertBefore(loginVideoBg, gateScreen.firstChild);
-}// INJECT THE CINEMATIC LOGIN VIDEO (With Hardware Detection)
-if (gateScreen) {
-    const loginVideoBg = document.createElement('video');
-    const isHighResScreen = window.innerWidth > 1200 || (window.innerWidth > 768 && window.devicePixelRatio > 1.5);
 
     loginVideoBg.src = isHighResScreen ? getLink('bg1-4k') : getLink('bg1-1080p');
 
@@ -1237,7 +1216,7 @@ function initToffeeAssistant() {
     thoughtBubble.className = 'toffee-bubble';
     
     const toffeeImg = document.createElement('img');
-    toffeeImg.src = '/pics/toffee-run.png';
+    toffeeImg.src = getLink('toffee-run');
     toffeeImg.className = 'toffee-img';
     toffeeImg.alt = 'Toffee Assistant';
 
