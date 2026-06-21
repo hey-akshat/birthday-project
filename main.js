@@ -191,7 +191,7 @@ window.onload = () => {
     }
 
     assetsToLoad.forEach(src => {
-        if (src.endsWith('')) || src.endsWith('.wav')) {
+        if (src.endsWith('.mp3') || src.endsWith('.wav')) {
             const audio = new Audio();
             audio.addEventListener('canplaythrough', updateProgress, { once: true });
             audio.addEventListener('error', updateProgress, { once: true });
