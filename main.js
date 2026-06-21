@@ -134,6 +134,9 @@ window.onload = () => {
     const progressFill = document.getElementById('progress-fill');
     const bootScreen = document.getElementById('boot-screen');
 
+    // Update the initial text so she knows it's a heavy, high-quality payload
+    if (bootText) bootText.innerText = "DOWNLOADING HIGH-FIDELITY MEMORIES... PLEASE WAIT";
+
     function completeLoading() {
         if (isSystemReady) return;
         isSystemReady = true;
@@ -146,7 +149,7 @@ window.onload = () => {
                 bootScreen.style.opacity = '0';
                 setTimeout(() => bootScreen.remove(), 1000);
             }
-        }, 800); // Wait almost a second on the final message before fading
+        }, 800); 
     }
 
     function updateProgress() {
@@ -154,26 +157,21 @@ window.onload = () => {
         loadedCount++;
         const percent = Math.floor((loadedCount / assetsToLoad.length) * 100);
         
-        // UPGRADE: Artificial Stagger Delay
-        // Multiplies the loaded count by 300ms so the bar physically takes time to fill
-        // even if the files are downloaded instantly.
-        setTimeout(() => {
-            if (bootText) bootText.innerText = `LOADING... ${percent}%`; 
-            if (progressFill) progressFill.style.width = `${percent}%`;
+        if (bootText) bootText.innerText = `BUFFERING 4K ASSETS... ${percent}%`; 
+        if (progressFill) progressFill.style.width = `${percent}%`;
 
-            if (loadedCount >= assetsToLoad.length) {
-                // Wait 1 second at 100% before triggering the unlock
-                setTimeout(completeLoading, 1000);
-            }
-        }, loadedCount * 300); 
+        if (loadedCount >= assetsToLoad.length) {
+            setTimeout(completeLoading, 1000);
+        }
     }
 
+    // THE FIX: Extended the failsafe to 60 seconds to allow for 4K video downloads on remote networks
     setTimeout(() => {
         if (!isSystemReady) {
-            console.warn("Preloader timed out. Forcing system unlock.");
+            console.warn("Network timeout. Forcing system unlock with available assets.");
             completeLoading();
         }
-    }, 8000); // Extended failsafe to 8 seconds to accommodate the aesthetic delay
+    }, 60000); 
 
     if (assetsToLoad.length === 0) {
         completeLoading();
