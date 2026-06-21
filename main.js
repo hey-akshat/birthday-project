@@ -291,6 +291,30 @@ if (gateScreen) {
     loginVideoBg.className = 'login-bg-video';
     
     gateScreen.insertBefore(loginVideoBg, gateScreen.firstChild);
+}// INJECT THE CINEMATIC LOGIN VIDEO (With Hardware Detection)
+if (gateScreen) {
+    const loginVideoBg = document.createElement('video');
+    const isHighResScreen = window.innerWidth > 1200 || (window.innerWidth > 768 && window.devicePixelRatio > 1.5);
+
+    loginVideoBg.src = isHighResScreen ? '/videos/bg1-4k.mp4' : '/videos/bg1-1080p.mp4';
+
+    loginVideoBg.autoplay = true;
+    loginVideoBg.loop = true;
+    loginVideoBg.muted = true; 
+    loginVideoBg.playsInline = true;
+    loginVideoBg.setAttribute('muted', '');
+    loginVideoBg.setAttribute('playsinline', '');
+    loginVideoBg.className = 'login-bg-video';
+
+    gateScreen.insertBefore(loginVideoBg, gateScreen.firstChild);
+
+    // THE DESKTOP FIX: Force the video to wake up on interaction
+    const wakeUpVideo = () => {
+        loginVideoBg.play().catch(() => console.log("Awaiting user click to unlock video..."));
+    };
+    
+    wakeUpVideo(); // Try to start it instantly
+    document.body.addEventListener('click', wakeUpVideo, { once: true }); // Force it to start the moment you click anywhere
 }
 
 // INJECT THE MAIN DESKTOP CINEMATIC VIDEO (Background 2)
