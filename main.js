@@ -33,13 +33,13 @@ const CONFIG = {
                 title: "Jldi aashirvad lelo, genz aarti hai 🤣", 
                 src: "/stickers/sticker1.png", 
                 // THE FIX: Added width: 100% to stop the overflow, and 'autoplay' to unfreeze the video!
-                content: "<div class='landscape-player' style='width: 100%;'><video src='/videos/cat-dance.mp4' autoplay loop playsinline style='width: 100%; outline: none; border: none;'></video></div>" 
+                content: "<div class='landscape-player' style='width: 100%;'><video src='/videos/cat-dance.mp4' autoplay loop muted playsinline style='width: 100%; outline: none; border: none;'></video></div>" 
             },
             { 
                 title: "Kaafi pehle ka hai 🤓", 
                 src: "/stickers/sticker2.png", 
                 // Notice we are using 'portrait-player' instead of 'landscape-player' here!
-                content: "<div class='portrait-player'><video src='/videos/your-3-sec-video.mp4' autoplay loop playsinline></video></div>" 
+                content: "<div class='portrait-player'><video src='/videos/your-3-sec-video.mp4' autoplay loop muted playsinline></video></div>" 
             },
             { 
                 title: "Contract.exe", 
@@ -282,6 +282,12 @@ if (gateScreen) {
     loginVideoBg.loop = true;
     loginVideoBg.muted = true; 
     loginVideoBg.playsInline = true;
+    
+    // THE BROWSER OVERRIDE FIX
+    loginVideoBg.setAttribute('muted', '');
+    loginVideoBg.setAttribute('playsinline', '');
+    loginVideoBg.setAttribute('autoplay', '');
+    
     loginVideoBg.className = 'login-bg-video';
     
     gateScreen.insertBefore(loginVideoBg, gateScreen.firstChild);
@@ -296,6 +302,12 @@ mainVideoBg.autoplay = true;
 mainVideoBg.loop = true;
 mainVideoBg.muted = true; 
 mainVideoBg.playsInline = true;
+
+// THE BROWSER OVERRIDE FIX
+mainVideoBg.setAttribute('muted', '');
+mainVideoBg.setAttribute('playsinline', '');
+mainVideoBg.setAttribute('autoplay', '');
+
 mainVideoBg.className = 'main-bg-video';
 
 // Start it completely invisible
