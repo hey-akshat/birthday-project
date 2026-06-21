@@ -1,0 +1,1117 @@
+/* ==========================================
+   IMPORTS & BASE
+   ========================================== */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Fredoka:wght@400;600&family=VT323&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #000; 
+    height: 100dvh; /* UPGRADED to dvh */
+    width: 100vw;
+    overflow: hidden; 
+}
+@keyframes gradientBreathe {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ==========================================
+   SPA ROUTING
+   ========================================== */
+   #app {
+    position: relative;
+    height: 100dvh; /* UPGRADED to dvh */
+    width: 100vw;
+}
+
+.screen {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.95);
+}
+
+/* ==========================================
+   GATEKEEPER UI (BUBBLY FONT)
+   ========================================== */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 24px;
+    padding: 3rem;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    text-align: center;
+    font-family: 'Fredoka', sans-serif;
+    color: #4a3b4c;
+}
+
+#reaction-container { font-size: 4rem; margin-bottom: 1rem; }
+.glass-panel h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+.glass-panel p { font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.8; }
+
+#name-input {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.8rem;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.4);
+    border: none;
+    border-bottom: 3px solid rgba(255, 255, 255, 0.6);
+    border-radius: 12px 12px 0 0;
+    color: #38293b;
+    font-family: 'Fredoka', sans-serif;
+    outline: none;
+}
+
+/* ==========================================
+   STICKERS & PHYSICS
+   ========================================== */
+#sticker-container {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; /* Let clicks pass through to stickers */
+}
+/* ==========================================
+   FLOATING STICKERS (The Catching Game)
+   ========================================== */
+   .sticker {
+    position: absolute;
+    width: 180px; 
+    height: auto;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important; 
+    box-shadow: none !important; 
+    cursor: pointer;
+    user-select: none;
+    
+    /* THE FIX: Explicitly tell the browser they are fully visible by default */
+    opacity: 1;
+    visibility: visible;
+    display: block;
+    
+    /* FORCED MAX PRIORITY */
+    z-index: 9999 !important; 
+    pointer-events: auto !important; 
+    
+    filter: drop-shadow(4px 6px 8px rgba(0, 0, 0, 0.4));
+    transition: opacity 0.5s ease, transform 0.1s ease;
+}
+
+/* ==========================================
+   RETRO WINDOWS 98 UI
+   ========================================== */
+#modal-layer {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.retro-window {
+    background: #c0c0c0;
+    border-top: 2px solid #ffffff;
+    border-left: 2px solid #ffffff;
+    border-right: 2px solid #000000;
+    border-bottom: 2px solid #000000;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90dvh; /* THE FIX: Window can never be taller than the screen */
+    display: flex;
+    flex-direction: column;
+    font-family: 'VT323', monospace;
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
+}
+/* Add these new classes right below it */
+.draggable-window {
+    position: absolute !important; 
+}
+
+.draggable-title {
+    cursor: grab;
+    user-select: none;
+}
+
+.draggable-title:active {
+    cursor: grabbing;
+}
+.title-bar {
+    background: #000080;
+    color: white;
+    padding: 5px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+    cursor: grab; /* Shows the hand cursor */
+    user-select: none; /* Stops text highlighting while dragging */
+}
+
+.title-bar:active {
+    cursor: grabbing; /* Closes the hand when clicked */
+}
+
+/* Add these anywhere near your other Retro Window styles */
+
+.greeting-window {
+    max-width: 650px !important;
+    min-height: 40vh;
+}
+
+#sticker-container.unfocused .sticker {
+    opacity: 0.5;
+    pointer-events: none; /* Prevents clicking them through the background */
+    filter: blur(1px); /* Optional: adds a slight depth-of-field effect */
+}
+
+.retro-window.finale-window {
+    max-width: 800px;
+    height: 70vh;
+}
+
+.title-bar {
+    background: #000080;
+    color: white;
+    padding: 5px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+}
+
+.close-btn {
+    background: #c0c0c0;
+    border-top: 2px solid #ffffff;
+    border-left: 2px solid #ffffff;
+    border-right: 2px solid #000000;
+    border-bottom: 2px solid #000000;
+    width: 25px; height: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+}
+
+.close-btn:active {
+    border-top: 2px solid #000000;
+    border-left: 2px solid #000000;
+    border-right: 2px solid #ffffff;
+    border-bottom: 2px solid #ffffff;
+}
+
+.window-content {
+    padding: 20px;
+    color: #000;
+    font-size: 1.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    overflow-y: auto; /* THE FIX: Adds a scrollbar inside the window if content is too big! */
+}
+
+.window-content img, .window-content video {
+    max-width: 100%;
+    border: 2px inset #fff;
+}
+
+/* ==========================================
+   CONFETTI (FINALE)
+   ========================================== */
+.confetti {
+    position: absolute;
+    width: 10px; height: 10px;
+    background: #ff0000;
+    pointer-events: none;
+    z-index: 99;
+}
+
+/* ==========================================
+   THOUGHT BUBBLE & GATEKEEPER UPDATES
+   ========================================== */
+   #reaction-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.thought-bubble {
+    position: absolute;
+    bottom: 85%;
+    left: 75%;
+    background: white;
+    border-radius: 20px;
+    padding: 10px 15px;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.1rem;
+    color: #38293b;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    white-space: nowrap;
+    pointer-events: none;
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* The little tail of the thought bubble */
+.thought-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 20px;
+    border-width: 10px 10px 0;
+    border-style: solid;
+    border-color: white transparent transparent transparent;
+}
+
+@keyframes popIn {
+    0% { opacity: 0; transform: translateY(10px) scale(0.8); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ==========================================
+   TYPEWRITER & EVASIVE BUTTON
+   ========================================== */
+.blinking-cursor {
+    font-weight: bold;
+    color: #000;
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+.window-content {
+    position: relative; /* Crucial for the evasive button boundaries */
+    min-height: 150px; 
+}
+
+.evasive-skip-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: #ab83a1;
+    color: white;
+    border: 2px solid white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: left 0.1s ease-out, top 0.1s ease-out; /* Smooth but fast jump */
+    z-index: 10;
+}
+
+/* ==========================================
+   TIME LOCK UI
+   ========================================== */
+#countdown-display {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4a3b4c;
+    margin-top: 15px;
+    display: none; /* Hidden until she types her name */
+    font-family: 'VT323', monospace;
+}
+
+/* ==========================================
+   MAGIC CURSOR / SPARKLE TRAIL
+   ========================================== */
+   .sparkle {
+    position: fixed; /* Fixed so it doesn't mess with page scrolling */
+    pointer-events: none; /* Crucial: stops the sparkles from blocking your clicks */
+    background: radial-gradient(circle, #ffffff 10%, #ffd700 80%);
+    border-radius: 50%;
+    z-index: 9999; /* Keeps them on top of everything */
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.8);
+    animation: sparkleFade 0.8s ease-out forwards;
+}
+
+@keyframes sparkleFade {
+    0% { transform: scale(1) translateY(0); opacity: 1; }
+    100% { transform: scale(0) translateY(30px); opacity: 0; }
+}
+
+/* ==========================================
+   TRY AGAIN BUTTON
+   ========================================== */
+   .try-again-btn {
+    display: none; /* Hidden by default */
+    background: #ffb6c1; /* Soft bubbly pink */
+    color: #38293b;
+    border: 2px solid white;
+    padding: 8px 20px;
+    border-radius: 25px;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    margin-top: 15px;
+    transition: transform 0.2s;
+}
+
+.try-again-btn:active {
+    transform: scale(0.95);
+}
+
+/* ==========================================
+   RUNNING CHARACTERS (EASTER EGG)
+   ========================================== */
+.running-character {
+    position: fixed;
+    top: 0; left: 0; 
+    z-index: 50; /* Floating above the background but behind the glass */
+    pointer-events: none; /* Crucial: She can't accidentally click them */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    will-change: transform; /* Optimizes physics rendering */
+}
+
+.char-img {
+    width: 80px; /* Adjust this when you generate your images */
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));
+}
+
+.char-thought {
+    background: white;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 0.9rem;
+    color: #333;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    white-space: nowrap;
+    position: relative;
+}
+
+/* Tiny triangle tail for the thought bubble */
+.char-thought::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px 6px 0;
+    border-style: solid;
+    border-color: white transparent transparent transparent;
+}
+
+/* ==========================================
+   STICKER BURST PARTICLES
+   ========================================== */
+   .burst-particle {
+    position: fixed;
+    border-radius: 50%;
+    /* Soft glowing pink gradient */
+    background: radial-gradient(circle, #ffb6c1 20%, #ff69b4 80%);
+    box-shadow: 0 0 10px #ff69b4;
+    pointer-events: none; /* So they don't block clicks */
+    z-index: 9998; /* Just under the memory windows */
+}
+
+/* ==========================================
+   BUBBLY LOADING SCREEN (FIXED)
+   ========================================== */
+   #boot-screen {
+    position: fixed !important; 
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;  
+    height: 100dvh !important; /* UPGRADED to dvh */
+    background: #fdf0f5; 
+    z-index: 999999 !important; /* Stays above absolutely everything */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 1s ease;
+}
+
+#boot-text {
+    font-family: 'Arial', sans-serif;
+    color: #ff69b4; /* Hot pink text */
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+}
+
+.progress-bar-container {
+    width: 250px;
+    height: 12px;
+    border-radius: 10px; /* Bubbly rounded corners */
+    background: #fff;
+    border: 2px solid #ffb6c1;
+    overflow: hidden;
+    padding: 2px;
+}
+
+#progress-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #ffb6c1, #ffd700); /* Pink to Gold gradient */
+    border-radius: 8px;
+    transition: width 0.3s ease-out;
+}
+
+/* ==========================================
+   TOFFEE ASSISTANT (Classic Bubble)
+   ========================================== */
+   #toffee-assistant {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
+}
+
+.toffee-bubble {
+    /* THE FIX: Dimmed translucent white with a frosted glass blur */
+    background: rgba(230, 230, 230, 0.65); 
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px); /* Safari support */
+    
+    color: #1a1a1a; /* Slightly softer black for better contrast */
+    border-radius: 20px; 
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    font-weight: bold;
+    /* Softened the shadow so it blends better into the darkness */
+    box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.2); 
+    max-width: 160px;
+    text-align: center;
+    transition: opacity 0.3s ease;
+    font-family: 'Fredoka', sans-serif; /* Matched to your custom font! */
+    position: relative;
+}
+
+/* The little triangle tail pointing down to Toffee */
+.toffee-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 10px 10px 0;
+    border-style: solid;
+    /* THE FIX: Ensure the tail perfectly matches the see-through bubble color */
+    border-color: rgba(230, 230, 230, 0.65) transparent transparent transparent;
+    display: block;
+    width: 0;
+}
+
+.toffee-img {
+    width: 90px;
+    height: auto;
+    
+    /* THE FIX: We kept the color grading and the drop-shadow, but completely removed the box-shadow and border-radius! */
+    filter: brightness(0.75) contrast(1.15) saturate(0.85) drop-shadow(0px 10px 15px rgba(0,0,0,0.8)); 
+}
+/* ==========================================
+   LANDSCAPE VIDEO PLAYER (16:9) - BORDERLESS
+   ========================================== */
+   .landscape-player {
+    width: 600px; 
+    max-width: 85vw; 
+    background: #000;
+    /* REMOVED: The green border and inset shadows */
+    border: none !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.landscape-player video {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 50dvh; /* THE FIX: Forces the AI video to shrink vertically on mobile */
+    aspect-ratio: 16 / 9; 
+    display: block;
+    margin: 0 auto;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Kills the default browser white focus ring in full screen */
+.landscape-player video:focus, 
+.landscape-player video:active, 
+.landscape-player video:-webkit-full-screen, 
+.landscape-player video:fullscreen {
+    outline: none !important;
+    border: none !important;
+}
+
+video::-webkit-media-controls-panel {
+    background-image: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+}
+
+/* ==========================================
+   PORTRAIT VIDEO PLAYER (9:16)
+   ========================================== */
+   .portrait-player {
+    height: 55vh; /* Prevents the window from becoming taller than the screen */
+    max-height: 600px;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px auto; /* Centers the player horizontally inside the window */
+}
+
+.portrait-player video {
+    height: 100%;
+    width: auto; /* Lets the width scale naturally based on the height */
+    aspect-ratio: 9 / 16; /* Forces the vertical format */
+    display: block;
+    
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.portrait-player video:focus, 
+.portrait-player video:active {
+    outline: none !important;
+    border: none !important;
+}
+
+/* ==========================================
+   MODAL & STICKER DIMMING LOGIC
+   ========================================== */
+/* Ensures the memory window sits absolutely on top of everything */
+#modal-layer {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 99999 !important; /* Overpowers the 999 sticker z-index */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* When a memory window is open, this dims the active stickers and pushes them back */
+body.dim-stickers .sticker {
+    opacity: 0.0 !important; /* Turns them mostly transparent */
+    pointer-events: none !important; /* Makes them unclickable while the window is open */
+    z-index: 10 !important; /* Drops them behind all open windows */
+    transition: opacity 0.3s ease, z-index 0s;
+}
+
+/* ==========================================
+   LOGIN SCREEN CINEMATIC VIDEO BACKGROUND
+   ========================================== */
+   #gate-screen {
+    background: transparent !important; 
+    position: relative;
+    overflow: hidden;
+    flex-direction: column; /* THE FIX: Automatically stacks the panel and button vertically */
+}
+
+.login-bg-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the video perfectly fills the screen without stretching */
+    z-index: 0; 
+    opacity: 0.8; /* Dims the video slightly so the neon text remains readable */
+}
+
+/* ==========================================
+   TRANSLUCENT GLASS LOGIN PANEL (Premium)
+   ========================================== */
+   .glass-panel {
+    position: relative;
+    z-index: 10; 
+    
+    /* THE DARKNESS: 0.5 means 50% dark overlay */
+    background-color: rgba(0, 0, 0, 0.1) !important;
+    
+    /* THE BLUR: Change 4px to 0px if you want the video 100% sharp and unblurred */
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    
+    /* THE BORDER: Replaced green with a subtle, premium white glass rim */
+    border: 1px solid rgba(255, 255, 255, 0.15) !important; 
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37) !important;
+    
+    /* Force all text inside to be pure white with a heavy drop shadow so it pops */
+    color: #ffffff !important;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 1) !important;
+}
+
+/* Ensure the heading and countdown are also bright white */
+.glass-panel h1, #countdown-display {
+    color: #ffffff !important;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 1) !important;
+}
+
+/* Make the input box look like premium glass instead of a terminal box */
+#name-input {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    color: #ffffff !important;
+    text-shadow: none;
+    border-radius: 8px; /* Slight rounding looks better on glass */
+}
+#name-input:focus {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-color: #ffffff !important;
+    outline: none;
+}
+
+/* ==========================================
+   MAIN DESKTOP CINEMATIC VIDEO BACKGROUND
+   ========================================== */
+   #main-screen {
+    position: relative;
+    overflow: hidden;
+    background: transparent !important; /* Kills the lavender gradient for the desktop */
+}
+
+.main-bg-video {
+    position: fixed !important; /* Locks it to the browser, not the HTML container */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover; 
+    
+    z-index: -2 !important; /* The absolute bottom layer */
+    pointer-events: none !important; 
+}
+/* Ensures the sticker container sits securely above the new video */
+#sticker-container {
+    z-index: 5;
+}
+
+/* ==========================================
+   ORGANIC NOTEBOOK PAGE (Message 5)
+   ========================================== */
+   .notebook-page {
+    position: relative;
+    background-color: #fdf6e3 !important; /* Creamy paper color */
+    padding: 30px 20px 20px 50px;
+    border-radius: 2px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+    
+    /* Draws the blue ruled notebook lines */
+    background-image: repeating-linear-gradient(transparent, transparent 31px, #a8d1df 31px, #a8d1df 32px);
+    line-height: 32px; /* Syncs the text exactly with the lines */
+    min-height: 300px;
+    text-align: left !important;
+}
+
+/* Draws the red margin line on the left */
+.notebook-page::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 35px;
+    bottom: 0; width: 2px;
+    background: #ff9999;
+    z-index: 1;
+}
+
+.handwriting {
+    position: relative;
+    z-index: 2;
+    font-family: 'Caveat', cursive !important;
+    font-size: 1.8rem !important;
+    color: #000080 !important; /* Ballpoint pen blue */
+    margin: 0;
+    text-shadow: none !important;
+}
+
+.handwriting-input {
+    position: relative;
+    z-index: 2;
+    font-family: 'Caveat', cursive !important;
+    font-size: 1.6rem !important;
+    color: #000080 !important;
+    width: 90%;
+    height: 120px;
+    background: transparent;
+    border: none;
+    outline: none;
+    resize: none;
+    margin-top: 15px;
+    /* Syncs her typing with the ruled lines */
+    line-height: 32px; 
+}
+
+/* Custom placeholder color so it looks like faded ink */
+.handwriting-input::placeholder {
+    color: rgba(0, 0, 128, 0.4);
+}
+
+.handwriting-btn {
+    position: relative;
+    z-index: 2;
+    font-family: 'Caveat', cursive !important;
+    font-size: 1.5rem !important;
+    background: transparent;
+    border: 2px solid #000080;
+    color: #000080;
+    padding: 2px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    display: block;
+    margin-top: 10px;
+}
+
+.handwriting-btn:hover {
+    background: #000080;
+    color: #fdf6e3;
+}
+
+/* ==========================================
+   GIANT INSTRUCTION TEXT
+   ========================================== */
+   #instruction-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999999;
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(3rem, 8vw, 6rem); /* Huge on PC, scales down safely for phones */
+    font-weight: 600;
+    color: #ffffff;
+    text-shadow: 0 5px 15px rgba(0,0,0,0.6), 0 0 20px #ff69b4, 0 0 40px #ffb6c1;
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none; /* So she can't accidentally click it */
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    text-align: center;
+}
+
+#instruction-overlay.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* ==========================================
+   MOBILE LANDSCAPE LOCK
+   ========================================== */
+   #landscape-lock {
+    display: none; 
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100dvh; /* UPGRADED to dvh */
+    background: linear-gradient(135deg, #ffb6c1, #a8d1df);
+    z-index: 99999999;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #38293b;
+    font-family: 'Fredoka', sans-serif;
+    padding: 20px;
+}
+#landscape-lock h2 { font-size: 2rem; margin-bottom: 10px; }
+#landscape-lock .rotate-icon { font-size: 4rem; animation: rotatePhone 2s infinite ease-in-out; }
+
+@keyframes rotatePhone {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(-90deg); }
+    100% { transform: rotate(0deg); }
+}
+
+/* Force show the lock ONLY on mobile devices in Portrait mode */
+@media (max-width: 768px) and (orientation: portrait) {
+    #landscape-lock {
+        display: flex !important;
+    }
+}
+
+/* ==========================================
+   CUSTOM IN-SCREEN KEYBOARD (BUBBLY)
+   ========================================== */
+#custom-keyboard {
+    display: none; 
+    position: fixed;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95vw;
+    max-width: 600px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    border-radius: 15px;
+    padding: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    z-index: 99999;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Show only on mobile landscape when activated (Expanded for larger modern phones) */
+@media (max-height: 600px) and (orientation: landscape) {
+    body.show-keyboard #custom-keyboard {
+        display: flex;
+    }
+    /* Gently shrink and raise the glass panel so the keyboard fits perfectly underneath */
+    body.show-keyboard .glass-panel {
+        transform: scale(0.8) translateY(-15%);
+        padding: 1.5rem;
+        transition: transform 0.3s ease;
+    }
+}
+
+.keyboard-row {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+}
+
+.key-btn {
+    background: #ffb6c1; /* Soft bubbly pink */
+    border: 2px solid #fff;
+    color: #38293b;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 12px;
+    padding: 8px 0;
+    flex: 1;
+    max-width: 45px;
+    cursor: pointer;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+    user-select: none;
+    touch-action: manipulation; /* Prevents double-tap zooming on mobile */
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.key-btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 0 0 rgba(0,0,0,0);
+}
+
+.key-btn.action-key {
+    max-width: 70px;
+    background: #a8d1df; /* Soft blue for backspace/clear */
+}
+
+/* Prevents the readonly input from looking grayed out */
+#name-input[readonly] {
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.4); 
+}
+
+/* ==========================================
+   GLOBAL TRY AGAIN BUTTON (Responsive)
+   ========================================== */
+   #global-try-again {
+    /* DEFAULT DESKTOP STYLE */
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-top: 20px; 
+    width: 220px; 
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    color: #fff;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    z-index: 9999;
+    transition: all 0.3s ease;
+}
+
+#global-try-again:active {
+    background: rgba(255, 255, 255, 0.4);
+    transform: scale(0.95); 
+}
+
+/* MOBILE OVERRIDE: Transforms into a circular icon at the bottom right */
+@media (max-width: 768px), (max-height: 600px) {
+    #global-try-again {
+        position: absolute; /* Pulls it out of the layout so the input box centers perfectly! */
+        bottom: 15px; 
+        right: 15px;
+        width: 45px;
+        height: 45px;
+        padding: 0;
+        margin-top: 0;
+        border-radius: 50%; /* Makes it a perfect circle */
+        font-size: 1.5rem; /* Enlarges the ↺ symbol */
+    }
+    
+    /* Hides the "Try Again" text entirely on mobile */
+    #global-try-again .try-text {
+        display: none; 
+    }
+}
+
+/* ==========================================
+   MOBILE THOUGHT BUBBLE FIX
+   ========================================== */
+   @media (max-width: 768px), (max-height: 600px) {
+    /* Shrink the emoji a little more */
+    #reaction-container {
+        font-size: 2.5rem; 
+        margin-bottom: 0;
+    }
+
+    #reaction-wrapper {
+        margin-top: 0;
+        margin-bottom: 10px;
+    }
+
+    /* THE FIX: Move the bubble completely to the RIGHT side of the emoji */
+    .thought-bubble {
+        bottom: 10%; /* Drops it down alongside the emoji's body */
+        left: 95%; /* Pushes it out to the right */
+        white-space: normal; 
+        width: 130px; 
+        text-align: center;
+        font-size: 0.85rem;
+        padding: 6px 10px;
+        z-index: 50;
+    }
+    
+    /* THE FIX: Redraw the tail to point LEFT towards the emoji instead of down */
+    .thought-bubble::after {
+        left: -8px; 
+        bottom: 10px;
+        border-width: 8px 10px 8px 0;
+        border-style: solid;
+        border-color: transparent white transparent transparent;
+    }
+}
+
+/* ==========================================
+   KEYBOARD UPGRADES (Spacebar & Notebook)
+   ========================================== */
+   .space-key {
+    max-width: 50% !important; /* Makes it a wide bar instead of a square */
+    flex: 2 !important;
+}
+
+/* Ensure the notebook input keeps its proper cursor on mobile */
+#secret-message[readonly] {
+    cursor: pointer;
+}
+
+/* ==========================================
+   MOBILE VIDEO PLAYER FIX (Remove Black Bars)
+   ========================================== */
+   @media (max-width: 768px), (max-height: 600px) {
+    .landscape-player, .portrait-player {
+        background: transparent !important; /* Removes the black letterboxing */
+        width: fit-content !important; /* Forces the container to perfectly hug the video */
+        margin: 0 auto !important; /* Keeps it perfectly centered in the retro window */
+    }
+
+    .landscape-player video {
+        /* Lets the video grow slightly larger vertically so it's easier to watch on phones */
+        max-height: 60dvh; 
+    }
+}
+
+/* ==========================================
+   KEYBOARD VISUAL GHOST LOCK
+   ========================================== */
+   #custom-keyboard.locked-visuals .key-btn {
+    pointer-events: none !important; /* Physically prevents the CSS :active animation from triggering */
+}
+
+/* ==========================================
+   MOBILE GREETING WINDOW FIX (Tighten Height)
+   ========================================== */
+   @media (max-width: 768px), (max-height: 600px) {
+    .greeting-window {
+        /* THE FIX: Anchor to the absolute center so it doesn't expand off-screen */
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        
+        min-height: 0 !important; 
+        height: auto !important; 
+        width: 95vw !important; /* Gives a tiny breathing margin on the left/right */
+        max-height: 90dvh !important;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .greeting-window .window-content {
+        min-height: 0 !important; 
+        padding: 5px !important; 
+        flex: 1; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .greeting-window .landscape-player {
+        width: 100% !important;
+        display: flex;
+        justify-content: center;
+    }
+
+    .greeting-window .landscape-player video {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 75dvh !important; 
+        /* The magic bullet: Forces the video to fit entirely inside the box, no matter what! */
+        object-fit: contain !important; 
+    }
+}
+
+/* ==========================================
+   MOBILE KEYBOARD LAYERING & NOTEBOOK SLIDE
+   ========================================== */
+   #custom-keyboard {
+    /* THE FIX: Forces the keyboard to sit in front of the memory windows */
+    z-index: 999999 !important; 
+}
+
+@media (max-width: 768px), (max-height: 600px) {
+    /* THE FIX: Gently slides the notebook up so she can see what she is typing */
+    body.show-keyboard #modal-layer .retro-window {
+        transform: translateY(-20%) scale(0.95);
+        transition: transform 0.3s ease;
+    }
+}

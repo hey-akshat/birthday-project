@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Surprise</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div id="boot-screen">
+        <div id="boot-text">INITIALIZING MEMORY BANKS... 0%</div>
+        <div class="progress-bar-container">
+            <div id="progress-fill"></div>
+        </div>
+    </div>
+    
+    <main id="app">
+        
+        <section id="gate-screen" class="screen active">
+            <div class="glass-panel">
+                <div id="reaction-container">
+                    <span id="reaction-emoji">🙄</span>
+                </div>
+                
+                <h1>Who goes there?</h1>
+                <p>Please enter your first name to unlock.</p>
+                
+                <input type="text" id="name-input" placeholder="Type here..." autocomplete="off">
+            </div>
+        </section>
+
+        <section id="main-screen" class="screen hidden">
+            <div id="sticker-container"></div>
+        </section>
+
+    </main>
+
+    <script type="module" src="/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+# Project Context
+This is a high-performance, multi-page vanilla JavaScript application using Vite.
+The goal is a highly interactive birthday greeting with custom cursor logic, custom stickers, and multi-page routing via sub-pages.
+
+# File Architecture Rules
+1. ALL core styling must live in `/style.css`. No inline styles.
+2. ALL main homepage logic must live in `/main.js`.
+3. ALL secondary pages or video portals must live inside a dedicated folder as separate HTML/JS files.
+4. ALL raw media assets must be referenced strictly from their respective subfolders in `/public/`.
+
+# Performance Rules for AI
+1. Prioritize `requestAnimationFrame` over `setInterval` for tracking the cursor or managing particle trails.
+2. When creating interactive stickers, always include a cleanup mechanism using `.remove()` after animations finish to prevent memory leaks and browser lag.
